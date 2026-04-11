@@ -16,11 +16,13 @@ export default async function AppLayout({
   }
 
   return (
-    <div className="relative min-h-full bg-[var(--md-background)] text-[var(--md-on-surface)]">
+    <div className="relative flex min-h-dvh flex-col bg-[var(--md-background)] text-[var(--md-on-surface)]">
+      <div className="mdui-atmosphere-wash" aria-hidden />
       <div className="mdui-atmosphere" aria-hidden>
         <div className="mdui-blob mdui-blob-primary -left-28 top-0 h-72 w-72 -translate-y-1/4" />
         <div className="mdui-blob mdui-blob-tertiary left-1/3 top-40 h-64 w-64 -translate-x-1/2" />
         <div className="mdui-blob mdui-blob-secondary -right-20 top-24 h-96 w-96 translate-x-1/4" />
+        <div className="mdui-blob mdui-blob-primary bottom-0 right-1/4 h-80 w-80 translate-y-1/3 opacity-25" />
       </div>
 
       <header className="relative z-10 border-b border-[color-mix(in_srgb,var(--md-outline)_22%,transparent)] bg-[color-mix(in_srgb,var(--md-background)_82%,transparent)] backdrop-blur-md">

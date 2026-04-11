@@ -13,7 +13,7 @@ export default async function SignupPage() {
   }
 
   return (
-    <main className="relative flex min-h-full flex-col justify-center overflow-hidden px-6 py-16">
+    <main className="relative flex min-h-dvh flex-col justify-center overflow-hidden px-6 py-16">
       <div className="mdui-atmosphere" aria-hidden>
         <div className="mdui-blob mdui-blob-tertiary -right-16 top-20 h-72 w-72 translate-x-1/4" />
         <div className="mdui-blob mdui-blob-primary left-10 bottom-10 h-80 w-80 -translate-x-1/4 translate-y-1/4" />

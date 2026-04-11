@@ -3,14 +3,21 @@ import type { SlideData } from "@/lib/types/deck";
 type Props = {
   slide: SlideData;
   className?: string;
+  /** `canvas` fills a fixed 16:9 / PDF box; `editor` grows with content (deck preview). */
+  variant?: "canvas" | "editor";
 };
 
-export function SlideContent({ slide, className = "" }: Props) {
+export function SlideContent({
+  slide,
+  className = "",
+  variant = "canvas",
+}: Props) {
   const showImage = slide.layout === "title-image" && slide.image;
+  const fillParent = variant === "canvas";
 
   return (
     <div
-      className={`flex h-full flex-col p-8 md:p-10 ${className}`}
+      className={`flex flex-col p-8 md:p-10 ${fillParent ? "h-full" : "h-auto min-h-0"} ${className}`}
       style={{
         background: "var(--slide-bg)",
         borderRadius: "var(--slide-radius)",
@@ -29,7 +36,7 @@ export function SlideContent({ slide, className = "" }: Props) {
       </h2>
 
       <div
-        className={`mt-6 grid flex-1 gap-6 ${showImage ? "md:grid-cols-2" : ""}`}
+        className={`mt-6 grid gap-6 ${fillParent ? "flex-1" : ""} ${showImage ? "md:grid-cols-2" : ""}`}
       >
         {slide.bullets.length > 0 ? (
           <ul className="list-none space-y-3 text-left">

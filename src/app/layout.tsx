@@ -34,7 +34,7 @@ export default function RootLayout({
       lang="en"
       className={`${mdSans.variable} ${slideHeading.variable} ${slideBody.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-dvh flex-col">{children}</body>
     </html>
   );
 }

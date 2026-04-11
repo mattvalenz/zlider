@@ -19,7 +19,7 @@ export default async function LoginPage({
   const params = await searchParams;
 
   return (
-    <main className="relative flex min-h-full flex-col justify-center overflow-hidden px-6 py-16">
+    <main className="relative flex min-h-dvh flex-col justify-center overflow-hidden px-6 py-16">
       <div className="mdui-atmosphere" aria-hidden>
         <div className="mdui-blob mdui-blob-primary -left-24 top-1/4 h-80 w-80 -translate-y-1/2" />
         <div className="mdui-blob mdui-blob-secondary right-0 bottom-0 h-96 w-96 translate-x-1/3 translate-y-1/3" />

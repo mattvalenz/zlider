@@ -243,13 +243,20 @@ export function DeckEditorClient({ initialDeck }: Props) {
 
         <div className="min-w-0">
           <div
-            className="aspect-video w-full overflow-hidden rounded-[var(--slide-radius)] border border-[var(--slide-border)] shadow-lg"
-            style={{ background: "var(--slide-bg)" }}
+            className="w-full overflow-y-auto overflow-x-hidden rounded-[var(--slide-radius)] border border-[var(--slide-border)] shadow-lg"
+            style={{
+              background: "var(--slide-bg)",
+              minHeight: "min(72vh, 720px)",
+              maxHeight: "min(90vh, 960px)",
+            }}
           >
             {activeSlide ? (
-              <SlideContent slide={activeSlide} />
+              <SlideContent slide={activeSlide} variant="editor" />
             ) : (
-              <div className="flex h-full items-center justify-center p-8 text-[var(--slide-muted)]">
+              <div
+                className="flex min-h-[min(72vh,720px)] items-center justify-center p-8 text-[var(--slide-muted)]"
+                style={{ background: "var(--slide-bg)" }}
+              >
                 No slides
               </div>
             )}
