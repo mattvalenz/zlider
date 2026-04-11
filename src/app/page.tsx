@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { LandingPage } from "@/components/landing/landing-page";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function Home() {
@@ -9,5 +10,5 @@ export default async function Home() {
   if (user) {
     redirect("/decks");
   }
-  redirect("/auth/login");
+  return <LandingPage />;
 }
