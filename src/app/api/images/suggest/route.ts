@@ -12,8 +12,8 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const q = searchParams.get("q") ?? "";
-    const images = await searchUnsplash(q, 6);
-    return NextResponse.json({ images });
+    const { images, emptyReason } = await searchUnsplash(q, 6);
+    return NextResponse.json({ images, emptyReason });
   } catch (e) {
     if (e instanceof Error && e.message === "Unauthorized") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { DM_Sans, Fraunces, Roboto } from "next/font/google";
 import "./globals.css";
+
+const mdSans = Roboto({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  variable: "--font-md-sans",
+  display: "swap",
+});
 
 const slideHeading = Fraunces({
   variable: "--font-slide-heading",
@@ -25,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${slideHeading.variable} ${slideBody.variable} h-full antialiased`}
+      className={`${mdSans.variable} ${slideHeading.variable} ${slideBody.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

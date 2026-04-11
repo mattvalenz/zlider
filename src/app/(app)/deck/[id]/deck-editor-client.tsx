@@ -37,6 +37,23 @@ const TONES: SlideTone[] = [
   "professional",
 ];
 
+function unsplashEmptyMessage(emptyReason?: string): string {
+  switch (emptyReason) {
+    case "no_key":
+      return "No suggestions: set UNSPLASH_ACCESS_KEY in .env.local (server-only) and restart the dev server.";
+    case "unauthorized":
+      return "Unsplash rejected the key (401). Use the Access Key from your application’s page—not the Secret Key.";
+    case "forbidden":
+      return "Unsplash denied access (403). Check that your app is active and the key matches this project.";
+    case "rate_limited":
+      return "Unsplash rate limit reached. Try again in a few minutes.";
+    case "bad_response":
+      return "Unsplash returned an error. Try again later.";
+    default:
+      return "No image results for this slide. Try editing the title or first bullet, or try again.";
+  }
+}
+
 export function DeckEditorClient({ initialDeck }: Props) {
   const router = useRouter();
   const [title, setTitle] = useState(initialDeck.title);
@@ -134,12 +151,13 @@ export function DeckEditorClient({ initialDeck }: Props) {
         setSuggestions([]);
         return;
       }
-      const data = (await res.json()) as { images: SlideImage[] };
+      const data = (await res.json()) as {
+        images: SlideImage[];
+        emptyReason?: string;
+      };
       setSuggestions(data.images);
       if (data.images.length === 0) {
-        setImgError(
-          "No suggestions (add UNSPLASH_ACCESS_KEY or try another slide).",
-        );
+        setImgError(unsplashEmptyMessage(data.emptyReason));
       }
     } catch {
       setImgError("Network error loading suggestions.");

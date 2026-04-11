@@ -30,8 +30,8 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4">
-      <label className="flex flex-col gap-1 text-sm font-medium text-[var(--slide-text,#111827)]">
+    <form onSubmit={onSubmit} className="flex flex-col gap-5">
+      <label className="flex flex-col gap-2 text-sm font-medium text-[var(--md-on-surface)]">
         Email
         <input
           name="email"
@@ -40,10 +40,10 @@ export function LoginForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="rounded-lg border border-[var(--slide-border,#e5e7eb)] bg-white px-3 py-2 text-base text-[var(--slide-on-light-text)] outline-none ring-[var(--slide-primary,#0d9488)] focus-visible:ring-2"
+          className="mdui-field"
         />
       </label>
-      <label className="flex flex-col gap-1 text-sm font-medium text-[var(--slide-text,#111827)]">
+      <label className="flex flex-col gap-2 text-sm font-medium text-[var(--md-on-surface)]">
         Password
         <input
           name="password"
@@ -52,18 +52,18 @@ export function LoginForm() {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="rounded-lg border border-[var(--slide-border,#e5e7eb)] bg-white px-3 py-2 text-base text-[var(--slide-on-light-text)] outline-none ring-[var(--slide-primary,#0d9488)] focus-visible:ring-2"
+          className="mdui-field"
         />
       </label>
       {error ? (
-        <p className="text-sm text-red-600" role="alert">
+        <p className="text-sm text-[var(--md-error)]" role="alert">
           {error}
         </p>
       ) : null}
       <button
         type="submit"
         disabled={loading}
-        className="mt-2 inline-flex h-11 items-center justify-center rounded-lg bg-[var(--slide-primary,#0d9488)] px-4 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-50"
+        className="mdui-btn-filled mt-1 w-full disabled:pointer-events-none"
       >
         {loading ? "Signing in…" : "Sign in"}
       </button>

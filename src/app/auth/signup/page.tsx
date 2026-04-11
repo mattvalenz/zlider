@@ -13,26 +13,33 @@ export default async function SignupPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-full max-w-md flex-col justify-center px-6 py-16">
-      <div className="rounded-[var(--slide-radius,12px)] border border-[var(--slide-border,#e5e7eb)] bg-[var(--slide-surface-elevated,#fff)] p-8 shadow-sm">
-        <h1 className="font-[family-name:var(--font-slide-heading)] text-2xl font-semibold tracking-tight text-[var(--slide-text,#111827)]">
-          Create account
-        </h1>
-        <p className="mt-2 text-sm text-[var(--slide-muted,#6b7280)]">
-          Start building AI-generated slide decks.
-        </p>
-        <div className="mt-8">
-          <SignupForm />
+    <main className="relative flex min-h-full flex-col justify-center overflow-hidden px-6 py-16">
+      <div className="mdui-atmosphere" aria-hidden>
+        <div className="mdui-blob mdui-blob-tertiary -right-16 top-20 h-72 w-72 translate-x-1/4" />
+        <div className="mdui-blob mdui-blob-primary left-10 bottom-10 h-80 w-80 -translate-x-1/4 translate-y-1/4" />
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-md">
+        <div className="mdui-card p-8 sm:p-10">
+          <h1 className="text-[2rem] font-medium leading-snug tracking-tight text-[var(--md-on-surface)]">
+            Create account
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--md-on-surface-variant)]">
+            Start building AI-generated slide decks.
+          </p>
+          <div className="mt-8">
+            <SignupForm />
+          </div>
+          <p className="mt-8 text-center text-sm text-[var(--md-on-surface-variant)]">
+            Already have an account?{" "}
+            <Link
+              href="/auth/login"
+              className="mdui-btn-text !inline !min-h-0 !px-1 !py-0 !text-[var(--md-primary)]"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
-        <p className="mt-8 text-center text-sm text-[var(--slide-muted,#6b7280)]">
-          Already have an account?{" "}
-          <Link
-            href="/auth/login"
-            className="font-medium text-[var(--slide-primary,#0d9488)] underline-offset-4 hover:underline"
-          >
-            Sign in
-          </Link>
-        </p>
       </div>
     </main>
   );

@@ -45,7 +45,7 @@ export function CreateDeckForm() {
 
   return (
     <form onSubmit={(e) => void onSubmit(e)} className="flex flex-col gap-6">
-      <label className="flex flex-col gap-2 text-sm font-medium text-[var(--slide-text)]">
+      <label className="flex flex-col gap-2 text-sm font-medium text-[var(--md-on-surface)]">
         Prompt
         <textarea
           required
@@ -53,17 +53,17 @@ export function CreateDeckForm() {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="e.g. A 10-minute product update for the team: Q1 goals, roadmap, and risks."
-          className="min-h-[120px] rounded-lg border border-[var(--slide-border)] bg-white px-3 py-2 text-base font-normal text-[var(--slide-on-light-text)] placeholder:text-slate-500 outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
+          className="mdui-field min-h-[120px] resize-y"
         />
       </label>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="flex flex-col gap-2 text-sm font-medium text-[var(--slide-text)]">
+        <label className="flex flex-col gap-2 text-sm font-medium text-[var(--md-on-surface)]">
           Tone
           <select
             value={tone}
             onChange={(e) => setTone(e.target.value as SlideTone)}
-            className="h-11 rounded-lg border border-[var(--slide-border)] bg-white px-3 text-[var(--slide-on-light-text)] outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
+            className="mdui-field min-h-[3.25rem] cursor-pointer py-2.5"
           >
             {TONES.map((t) => (
               <option key={t} value={t}>
@@ -72,12 +72,12 @@ export function CreateDeckForm() {
             ))}
           </select>
         </label>
-        <label className="flex flex-col gap-2 text-sm font-medium text-[var(--slide-text)]">
+        <label className="flex flex-col gap-2 text-sm font-medium text-[var(--md-on-surface)]">
           Theme
           <select
             value={themeId}
             onChange={(e) => setThemeId(e.target.value as ThemeId)}
-            className="h-11 rounded-lg border border-[var(--slide-border)] bg-white px-3 text-[var(--slide-on-light-text)] outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
+            className="mdui-field min-h-[3.25rem] cursor-pointer py-2.5"
           >
             {THEME_IDS.map((id) => (
               <option key={id} value={id}>
@@ -88,7 +88,7 @@ export function CreateDeckForm() {
         </label>
       </div>
 
-      <label className="flex flex-col gap-2 text-sm font-medium text-[var(--slide-text)]">
+      <label className="flex flex-col gap-2 text-sm font-medium text-[var(--md-on-surface)]">
         Max slides
         <input
           type="number"
@@ -96,12 +96,16 @@ export function CreateDeckForm() {
           max={20}
           value={maxSlides}
           onChange={(e) => setMaxSlides(Number(e.target.value))}
-          className="h-11 rounded-lg border border-[var(--slide-border)] bg-white px-3 text-[var(--slide-on-light-text)] outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
+          className="mdui-field min-h-[3.25rem]"
         />
       </label>
 
       {error ? (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+        <p
+          className="rounded-[var(--md-radius-sm)] px-3 py-2 text-sm text-[var(--md-error)]"
+          style={{ background: "var(--md-error-container)" }}
+          role="alert"
+        >
           {error}
         </p>
       ) : null}
@@ -109,11 +113,11 @@ export function CreateDeckForm() {
       <button
         type="submit"
         disabled={loading}
-        className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[var(--slide-primary,#0d9488)] px-4 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-50"
+        className="mdui-btn-filled w-full gap-2 disabled:pointer-events-none"
       >
         {loading ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
             Generating…
           </>
         ) : (

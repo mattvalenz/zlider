@@ -1,8 +1,39 @@
 @import "tailwindcss";
 
+/* -------------------------------------------------------------------------- */
+/* Material You (MD3) — app UI tokens. Deck canvas still uses --slide-* via ThemeBridge. */
+/* -------------------------------------------------------------------------- */
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --md-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-duration: 300ms;
+  --md-duration-fast: 200ms;
+
+  --md-background: #fffbfe;
+  --md-on-background: #1c1b1f;
+  --md-on-surface: #1c1b1f;
+  --md-on-surface-variant: #49454f;
+  --md-primary: #6750a4;
+  --md-on-primary: #ffffff;
+  --md-secondary-container: #e8def8;
+  --md-on-secondary-container: #1d192b;
+  --md-tertiary: #7d5260;
+  --md-on-tertiary: #ffffff;
+  --md-surface-container: #f3edf7;
+  --md-surface-container-low: #e7e0ec;
+  --md-outline: #79747e;
+  --md-error: #b3261e;
+  --md-error-container: #f9dedc;
+
+  --md-radius-xs: 8px;
+  --md-radius-sm: 12px;
+  --md-radius-md: 16px;
+  --md-radius-lg: 24px;
+  --md-radius-xl: 28px;
+  --md-radius-2xl: 48px;
+
+  /* Legacy slide tokens (editor preview / themes) — unchanged names for ThemeBridge */
+  --background: var(--md-background);
+  --foreground: var(--md-on-surface);
   --slide-primary: #0d9488;
   --slide-primary-muted: #ccfbf1;
   --slide-surface: #f8fafc;
@@ -12,31 +43,293 @@
   --slide-accent: #0f766e;
   --slide-border: #e2e8f0;
   --slide-radius: 12px;
-  /* Text for fields on white/light backgrounds; do not override in dark mode — avoids inheriting --slide-text */
   --slide-on-light-text: #0f172a;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-slide-body);
-  --font-heading: var(--font-slide-heading);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f172a;
-    --foreground: #f1f5f9;
+    --md-background: #1c1b1f;
+    --md-on-background: #e6e1e5;
+    --md-on-surface: #e6e1e5;
+    --md-on-surface-variant: #cac4d0;
+    --md-primary: #d0bcff;
+    --md-on-primary: #381e72;
+    --md-secondary-container: #4a4458;
+    --md-on-secondary-container: #e8def8;
+    --md-tertiary: #efb8c8;
+    --md-on-tertiary: #492532;
+    --md-surface-container: #2b2930;
+    --md-surface-container-low: #211f26;
+    --md-outline: #938f99;
+
     --slide-surface: #0f172a;
     --slide-surface-elevated: #1e293b;
     --slide-text: #f1f5f9;
     --slide-muted: #94a3b8;
     --slide-border: #334155;
+    --background: var(--md-background);
+    --foreground: var(--md-on-surface);
   }
 }
 
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-md-sans);
+  --font-heading: var(--font-slide-heading);
+  --color-mdui-background: var(--md-background);
+  --color-mdui-on-surface: var(--md-on-surface);
+  --color-mdui-on-surface-variant: var(--md-on-surface-variant);
+  --color-mdui-primary: var(--md-primary);
+  --color-mdui-on-primary: var(--md-on-primary);
+  --color-mdui-secondary-container: var(--md-secondary-container);
+  --color-mdui-on-secondary-container: var(--md-on-secondary-container);
+  --color-mdui-tertiary: var(--md-tertiary);
+  --color-mdui-surface-container: var(--md-surface-container);
+  --color-mdui-surface-container-low: var(--md-surface-container-low);
+  --color-mdui-outline: var(--md-outline);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-slide-body), system-ui, sans-serif;
+  background: var(--md-background);
+  color: var(--md-on-surface);
+  font-family: var(--font-md-sans), system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* MD3 filled text field: rounded top, bottom border emphasis */
+.mdui-field {
+  min-height: 3.5rem;
+  width: 100%;
+  border-radius: var(--md-radius-sm) var(--md-radius-sm) 0 0;
+  border: none;
+  border-bottom: 2px solid var(--md-outline);
+  background: var(--md-surface-container-low);
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--md-on-surface);
+  transition:
+    border-color var(--md-duration-fast) var(--md-ease-standard),
+    box-shadow var(--md-duration-fast) var(--md-ease-standard);
+}
+
+.mdui-field::placeholder {
+  color: color-mix(in srgb, var(--md-on-surface) 50%, transparent);
+}
+
+.mdui-field:hover {
+  border-bottom-color: color-mix(in srgb, var(--md-on-surface) 70%, var(--md-outline));
+}
+
+.mdui-field:focus {
+  outline: none;
+  border-bottom-color: var(--md-primary);
+  box-shadow: 0 0 0 2px var(--md-background), 0 0 0 4px var(--md-primary);
+}
+
+.mdui-field:focus-visible {
+  outline: none;
+}
+
+/* Primary pill (filled) */
+.mdui-btn-filled {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 1.5rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  color: var(--md-on-primary);
+  background: var(--md-primary);
+  border: none;
+  cursor: pointer;
+  transition:
+    transform var(--md-duration) var(--md-ease-standard),
+    filter var(--md-duration) var(--md-ease-standard),
+    box-shadow var(--md-duration) var(--md-ease-standard);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+.mdui-btn-filled:hover:not(:disabled) {
+  filter: brightness(0.95);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.12);
+}
+
+.mdui-btn-filled:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.mdui-btn-filled:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mdui-btn-filled:focus-visible {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+/* Text button (nav links) */
+.mdui-btn-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background var(--md-duration) var(--md-ease-standard);
+}
+
+.mdui-btn-text:hover {
+  background: color-mix(in srgb, var(--md-primary) 10%, transparent);
+}
+
+.mdui-btn-text:active {
+  transform: scale(0.97);
+}
+
+.mdui-btn-text:focus-visible {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+/* Tonal pill */
+.mdui-btn-tonal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--md-on-secondary-container);
+  background: var(--md-secondary-container);
+  border: none;
+  cursor: pointer;
+  transition:
+    transform var(--md-duration) var(--md-ease-standard),
+    filter var(--md-duration) var(--md-ease-standard),
+    box-shadow var(--md-duration) var(--md-ease-standard);
+}
+
+.mdui-btn-tonal:hover:not(:disabled) {
+  filter: brightness(0.97);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.08);
+}
+
+.mdui-btn-tonal:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.mdui-btn-tonal:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mdui-btn-tonal:focus-visible {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+/* Elevated surface card */
+.mdui-card {
+  border-radius: var(--md-radius-lg);
+  background: var(--md-surface-container);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+  transition:
+    box-shadow var(--md-duration) var(--md-ease-standard),
+    transform var(--md-duration) var(--md-ease-standard);
+}
+
+.mdui-card-interactive:hover {
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+  transform: scale(1.01);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mdui-btn-filled:active:not(:disabled),
+  .mdui-btn-text:active,
+  .mdui-btn-tonal:active:not(:disabled),
+  .mdui-card-interactive:hover {
+    transform: none;
+  }
+}
+
+/* Header / nav */
+.mdui-nav-link {
+  border-radius: 9999px;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-on-surface-variant);
+  text-decoration: none;
+  transition:
+    background var(--md-duration) var(--md-ease-standard),
+    color var(--md-duration) var(--md-ease-standard);
+}
+
+.mdui-nav-link:hover {
+  color: var(--md-on-surface);
+  background: color-mix(in srgb, var(--md-primary) 8%, transparent);
+}
+
+.mdui-nav-link:focus-visible {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+.mdui-brand-icon {
+  color: var(--md-primary);
+}
+
+/* Auth / marketing decorative blurs (aria-hidden in JSX) */
+.mdui-atmosphere {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.mdui-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(64px);
+  opacity: 0.35;
+}
+
+.mdui-blob-primary {
+  background: color-mix(in srgb, var(--md-primary) 55%, transparent);
+}
+
+.mdui-blob-tertiary {
+  background: color-mix(in srgb, var(--md-tertiary) 45%, transparent);
+}
+
+.mdui-blob-secondary {
+  background: color-mix(in srgb, var(--md-secondary-container) 70%, transparent);
 }
