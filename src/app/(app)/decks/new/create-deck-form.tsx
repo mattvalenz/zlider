@@ -53,7 +53,7 @@ export function CreateDeckForm() {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="e.g. A 10-minute product update for the team: Q1 goals, roadmap, and risks."
-          className="min-h-[120px] rounded-lg border border-[var(--slide-border)] bg-white px-3 py-2 text-base font-normal outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
+          className="min-h-[120px] rounded-lg border border-[var(--slide-border)] bg-white px-3 py-2 text-base font-normal text-[var(--slide-on-light-text)] placeholder:text-slate-500 outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
         />
       </label>
 
@@ -63,7 +63,7 @@ export function CreateDeckForm() {
           <select
             value={tone}
             onChange={(e) => setTone(e.target.value as SlideTone)}
-            className="h-11 rounded-lg border border-[var(--slide-border)] bg-white px-3 outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
+            className="h-11 rounded-lg border border-[var(--slide-border)] bg-white px-3 text-[var(--slide-on-light-text)] outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
           >
             {TONES.map((t) => (
               <option key={t} value={t}>
@@ -77,7 +77,7 @@ export function CreateDeckForm() {
           <select
             value={themeId}
             onChange={(e) => setThemeId(e.target.value as ThemeId)}
-            className="h-11 rounded-lg border border-[var(--slide-border)] bg-white px-3 outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
+            className="h-11 rounded-lg border border-[var(--slide-border)] bg-white px-3 text-[var(--slide-on-light-text)] outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
           >
             {THEME_IDS.map((id) => (
               <option key={id} value={id}>
@@ -96,7 +96,7 @@ export function CreateDeckForm() {
           max={20}
           value={maxSlides}
           onChange={(e) => setMaxSlides(Number(e.target.value))}
-          className="h-11 rounded-lg border border-[var(--slide-border)] bg-white px-3 outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
+          className="h-11 rounded-lg border border-[var(--slide-border)] bg-white px-3 text-[var(--slide-on-light-text)] outline-none ring-[var(--slide-primary)] focus-visible:ring-2"
         />
       </label>
 

@@ -45,7 +45,7 @@ export function SignupForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="rounded-lg border border-[var(--slide-border,#e5e7eb)] bg-white px-3 py-2 text-base outline-none ring-[var(--slide-primary,#0d9488)] focus-visible:ring-2"
+          className="rounded-lg border border-[var(--slide-border,#e5e7eb)] bg-white px-3 py-2 text-base text-[var(--slide-on-light-text)] outline-none ring-[var(--slide-primary,#0d9488)] focus-visible:ring-2"
         />
       </label>
       <label className="flex flex-col gap-1 text-sm font-medium text-[var(--slide-text,#111827)]">
@@ -58,7 +58,7 @@ export function SignupForm() {
           minLength={6}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="rounded-lg border border-[var(--slide-border,#e5e7eb)] bg-white px-3 py-2 text-base outline-none ring-[var(--slide-primary,#0d9488)] focus-visible:ring-2"
+          className="rounded-lg border border-[var(--slide-border,#e5e7eb)] bg-white px-3 py-2 text-base text-[var(--slide-on-light-text)] outline-none ring-[var(--slide-primary,#0d9488)] focus-visible:ring-2"
         />
       </label>
       {error ? (

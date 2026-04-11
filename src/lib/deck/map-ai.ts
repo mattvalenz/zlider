@@ -18,7 +18,7 @@ export function mapAiToSlides(output: AiDeckOutput): {
     layout: pickLayout(i, total),
     title: s.title,
     bullets: s.bullets,
-    notes: s.notes,
+    notes: s.notes ?? undefined,
   }));
 
   return {

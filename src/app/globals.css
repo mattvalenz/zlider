@@ -12,6 +12,8 @@
   --slide-accent: #0f766e;
   --slide-border: #e2e8f0;
   --slide-radius: 12px;
+  /* Text for fields on white/light backgrounds; do not override in dark mode — avoids inheriting --slide-text */
+  --slide-on-light-text: #0f172a;
 }
 
 @theme inline {

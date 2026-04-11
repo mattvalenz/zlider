@@ -8,7 +8,8 @@ export const outlineSectionSchema = z.object({
 export const slideOutputSchema = z.object({
   title: z.string(),
   bullets: z.array(z.string()).min(1).max(6),
-  notes: z.string().optional(),
+  // JSON schema / Gemini: use null when speaker notes are absent
+  notes: z.string().nullable(),
 });
 
 export const aiDeckOutputSchema = z.object({
@@ -22,7 +23,7 @@ export type AiDeckOutput = z.infer<typeof aiDeckOutputSchema>;
 export const singleSlideOutputSchema = z.object({
   title: z.string(),
   bullets: z.array(z.string()).min(1).max(6),
-  notes: z.string().optional(),
+  notes: z.string().nullable(),
 });
 
 export type SingleSlideOutput = z.infer<typeof singleSlideOutputSchema>;
