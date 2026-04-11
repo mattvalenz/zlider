@@ -23,6 +23,7 @@ export type SlideData = {
   order: number;
   layout: SlideLayout;
   title: string;
+  /** One entry per editor line (empty strings preserve blank lines). See `parseSlideBodyLines`. */
   bullets: string[];
   notes?: string;
   image?: SlideImage;

@@ -1,5 +1,6 @@
 import type { DeckRow, SlideData } from "@/lib/types/deck";
 import { getTheme } from "@/lib/themes/presets";
+import { parseSlideBodyLines } from "@/lib/slide/body";
 
 export async function buildPptxArrayBuffer(deck: DeckRow): Promise<ArrayBuffer> {
   const PptxGenJS = (await import("pptxgenjs")).default;
@@ -29,23 +30,39 @@ export async function buildPptxArrayBuffer(deck: DeckRow): Promise<ArrayBuffer> 
       fontFace: "Calibri",
     });
 
-    if (slide.bullets.length > 0) {
-      s.addText(
-        slide.bullets.map((b) => ({
-          text: b,
-          options: { bullet: { type: "bullet" as const } },
-        })),
-        {
-          x: 0.6,
-          y: slide.layout === "title" ? 1.65 : 1.45,
-          w: 11.5,
-          h: 4.5,
-          fontSize: 18,
-          color: tokens.text.replace("#", ""),
-          valign: "top",
-          fontFace: "Calibri",
-        },
-      );
+    const segments = parseSlideBodyLines(slide.bullets);
+    if (segments.some((s) => s.kind !== "gap")) {
+      const runs: {
+        text: string;
+        options: {
+          bullet?: boolean | { type: "bullet" };
+          breakLine?: boolean;
+        };
+      }[] = [];
+      for (const seg of segments) {
+        if (seg.kind === "gap") {
+          runs.push({ text: "", options: { breakLine: true } });
+          continue;
+        }
+        if (seg.kind === "bullet") {
+          runs.push({
+            text: seg.text,
+            options: { bullet: { type: "bullet" as const } },
+          });
+          continue;
+        }
+        runs.push({ text: seg.text, options: {} });
+      }
+      s.addText(runs, {
+        x: 0.6,
+        y: slide.layout === "title" ? 1.65 : 1.45,
+        w: 11.5,
+        h: 4.5,
+        fontSize: 18,
+        color: tokens.text.replace("#", ""),
+        valign: "top",
+        fontFace: "Calibri",
+      });
     }
 
     if (slide.image?.url) {

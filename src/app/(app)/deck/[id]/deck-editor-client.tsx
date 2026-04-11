@@ -138,10 +138,9 @@ export function DeckEditorClient({ initialDeck }: Props) {
     setImgLoading(true);
     setImgError(null);
     try {
-      const q = `${activeSlide.title} ${activeSlide.bullets[0] ?? ""}`.slice(
-        0,
-        120,
-      );
+      const firstLine =
+        activeSlide.bullets.find((l) => l.trim() !== "") ?? "";
+      const q = `${activeSlide.title} ${firstLine}`.slice(0, 120);
       const res = await fetch(
         `/api/images/suggest?q=${encodeURIComponent(q)}`,
       );
@@ -251,7 +250,7 @@ export function DeckEditorClient({ initialDeck }: Props) {
             }}
           >
             {activeSlide ? (
-              <SlideContent slide={activeSlide} variant="editor" />
+              <SlideContent slide={activeSlide} mode="flow" />
             ) : (
               <div
                 className="flex min-h-[min(72vh,720px)] items-center justify-center p-8 text-[var(--slide-muted)]"
@@ -325,20 +324,23 @@ export function DeckEditorClient({ initialDeck }: Props) {
                   />
                 </label>
                 <label className="text-sm font-medium text-[var(--slide-text)]">
-                  Bullets (one per line)
+                  Slide content
                   <textarea
-                    rows={6}
+                    rows={10}
                     value={activeSlide.bullets.join("\n")}
                     onChange={(e) =>
                       updateActiveField({
-                        bullets: e.target.value
-                          .split("\n")
-                          .map((l) => l.trim())
-                          .filter(Boolean),
+                        bullets: e.target.value.split("\n"),
                       })
                     }
-                    className="mt-1 w-full rounded-lg border border-[var(--slide-border)] bg-[var(--slide-surface-elevated)] px-3 py-2 text-sm"
+                    spellCheck
+                    className="mt-1 w-full rounded-lg border border-[var(--slide-border)] bg-[var(--slide-surface-elevated)] px-3 py-2 text-sm leading-relaxed"
                   />
+                  <span className="mt-1 block text-xs font-normal text-[var(--slide-muted)]">
+                    Lines without a leading hyphen are list bullets. Start a line with &quot;- &quot;
+                    for a normal paragraph (no bullet dot). Empty lines add space. Old AI decks with
+                    no leading &quot;-&quot; still show each line as a bullet.
+                  </span>
                 </label>
                 <label className="text-sm font-medium text-[var(--slide-text)]">
                   Speaker notes

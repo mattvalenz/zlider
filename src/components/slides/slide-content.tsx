@@ -1,23 +1,28 @@
 import type { SlideData } from "@/lib/types/deck";
+import {
+  parseSlideBodyLines,
+  slideBodyHasContent,
+} from "@/lib/slide/body";
 
 type Props = {
   slide: SlideData;
   className?: string;
-  /** `canvas` fills a fixed 16:9 / PDF box; `editor` grows with content (deck preview). */
-  variant?: "canvas" | "editor";
+  /**
+   * `fixed` — fill a fixed-size box (PDF/PPTX capture). `flow` — grow with content (editor preview scroll).
+   */
+  mode?: "fixed" | "flow";
 };
 
-export function SlideContent({
-  slide,
-  className = "",
-  variant = "canvas",
-}: Props) {
+/** Fills parent box (1920×1080 slide, PDF export, etc.). */
+export function SlideContent({ slide, className = "", mode = "fixed" }: Props) {
   const showImage = slide.layout === "title-image" && slide.image;
-  const fillParent = variant === "canvas";
+  const segments = parseSlideBodyLines(slide.bullets);
+  const showBody = slideBodyHasContent(slide.bullets);
+  const fill = mode === "fixed";
 
   return (
     <div
-      className={`flex flex-col p-8 md:p-10 ${fillParent ? "h-full" : "h-auto min-h-0"} ${className}`}
+      className={`flex flex-col p-8 md:p-10 ${fill ? "h-full min-h-0" : "min-h-full"} ${className}`}
       style={{
         background: "var(--slide-bg)",
         borderRadius: "var(--slide-radius)",
@@ -36,25 +41,45 @@ export function SlideContent({
       </h2>
 
       <div
-        className={`mt-6 grid gap-6 ${fillParent ? "flex-1" : ""} ${showImage ? "md:grid-cols-2" : ""}`}
+        className={`mt-6 grid gap-6 ${fill ? "min-h-0 flex-1" : ""} ${showImage ? "md:grid-cols-2" : ""}`}
       >
-        {slide.bullets.length > 0 ? (
-          <ul className="list-none space-y-3 text-left">
-            {slide.bullets.map((b, i) => (
-              <li
-                key={i}
-                className="relative pl-6 text-base leading-relaxed md:text-lg"
-                style={{ color: "var(--slide-text)" }}
-              >
-                <span
-                  className="absolute left-0 top-[0.35em] h-2 w-2 rounded-full"
-                  style={{ background: "var(--slide-accent)" }}
-                  aria-hidden
-                />
-                {b}
-              </li>
-            ))}
-          </ul>
+        {showBody ? (
+          <div
+            className={`space-y-3 text-left ${fill ? "min-h-0" : ""}`}
+          >
+            {segments.map((seg, i) => {
+              if (seg.kind === "gap") {
+                return (
+                  <div key={i} className="h-3 shrink-0" aria-hidden />
+                );
+              }
+              if (seg.kind === "paragraph") {
+                return (
+                  <p
+                    key={i}
+                    className="text-base leading-relaxed md:text-lg"
+                    style={{ color: "var(--slide-text)" }}
+                  >
+                    {seg.text}
+                  </p>
+                );
+              }
+              return (
+                <div
+                  key={i}
+                  className="relative pl-6 text-base leading-relaxed md:text-lg"
+                  style={{ color: "var(--slide-text)" }}
+                >
+                  <span
+                    className="absolute left-0 top-[0.35em] h-2 w-2 rounded-full"
+                    style={{ background: "var(--slide-accent)" }}
+                    aria-hidden
+                  />
+                  {seg.text}
+                </div>
+              );
+            })}
+          </div>
         ) : null}
 
         {showImage ? (
