@@ -2,6 +2,7 @@
 
 import { generateDeckContent, regenerateSlideContent } from "@/lib/ai/generate";
 import { requireUserId } from "@/lib/auth/require-user";
+import { getDeckForUserId } from "@/lib/deck/get-deck";
 import { mapAiToSlides } from "@/lib/deck/map-ai";
 import { rateLimit } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
@@ -77,17 +78,7 @@ export async function updateDeckSlides(input: {
     const userId = await requireUserId();
     const supabase = await createClient();
 
-    const { data: existing, error: fetchError } = await supabase
-      .from("decks")
-      .select("user_id")
-      .eq("id", input.deckId)
-      .single();
-
-    if (fetchError || !existing || existing.user_id !== userId) {
-      return { ok: false, error: "Not found." };
-    }
-
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("decks")
       .update({
         title: input.title,
@@ -95,10 +86,13 @@ export async function updateDeckSlides(input: {
         outline: input.outline,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", input.deckId);
+      .eq("id", input.deckId)
+      .eq("user_id", userId)
+      .select("id")
+      .single();
 
-    if (error) {
-      return { ok: false, error: error.message };
+    if (error || !data) {
+      return { ok: false, error: error?.message ?? "Not found." };
     }
 
     revalidatePath(`/deck/${input.deckId}`);
@@ -117,27 +111,20 @@ export async function updateDeckMeta(input: {
   try {
     const userId = await requireUserId();
     const supabase = await createClient();
-    const { data: existing, error: fetchError } = await supabase
-      .from("decks")
-      .select("user_id")
-      .eq("id", input.deckId)
-      .single();
-
-    if (fetchError || !existing || existing.user_id !== userId) {
-      return { ok: false, error: "Not found." };
-    }
-
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("decks")
       .update({
         theme_id: input.themeId,
         tone: input.tone,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", input.deckId);
+      .eq("id", input.deckId)
+      .eq("user_id", userId)
+      .select("id")
+      .single();
 
-    if (error) {
-      return { ok: false, error: error.message };
+    if (error || !data) {
+      return { ok: false, error: error?.message ?? "Not found." };
     }
 
     revalidatePath(`/deck/${input.deckId}`);
@@ -185,18 +172,11 @@ export async function regenerateSlideAction(input: {
       };
     }
 
-    const supabase = await createClient();
-    const { data: deck, error } = await supabase
-      .from("decks")
-      .select("*")
-      .eq("id", input.deckId)
-      .single();
-
-    if (error || !deck || deck.user_id !== userId) {
+    const row = await getDeckForUserId(input.deckId, userId);
+    if (!row) {
       return { ok: false, error: "Not found." };
     }
 
-    const row = deck as DeckRow;
     const slides = row.slides as SlideData[];
     const idx = slides.findIndex((s) => s.id === input.slideId);
     if (idx === -1) {
@@ -226,6 +206,7 @@ export async function regenerateSlideAction(input: {
 
     const nextSlides = slides.map((s) => (s.id === input.slideId ? updated : s));
 
+    const supabase = await createClient();
     await supabase
       .from("decks")
       .update({
@@ -249,21 +230,19 @@ export async function attachSlideImage(input: {
 }): Promise<{ ok: true; slides: SlideData[] } | { ok: false; error: string }> {
   try {
     const userId = await requireUserId();
-    const supabase = await createClient();
-    const { data: deck, error } = await supabase
-      .from("decks")
-      .select("*")
-      .eq("id", input.deckId)
-      .single();
-
-    if (error || !deck || deck.user_id !== userId) {
+    const deck = await getDeckForUserId(input.deckId, userId);
+    if (!deck) {
       return { ok: false, error: "Not found." };
     }
 
     const slides = deck.slides as SlideData[];
     const next = slides.map((s) => {
       if (s.id !== input.slideId) return s;
-      const layout = input.image ? "title-image" : s.layout === "title-image" ? "bullets" : s.layout;
+      const layout = input.image
+        ? "title-image"
+        : s.layout === "title-image"
+          ? "bullets"
+          : s.layout;
       return {
         ...s,
         image: input.image ?? undefined,
@@ -271,6 +250,7 @@ export async function attachSlideImage(input: {
       };
     });
 
+    const supabase = await createClient();
     const { error: up } = await supabase
       .from("decks")
       .update({
