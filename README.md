@@ -1,6 +1,6 @@
 ## Zlider
 
-https://zlider-iota.vercel.app/
+[Zlider](https://zlider-iota.vercel.app/)
 
 AI slide maker: prompt → edit → export (PPTX/PDF). Built with Next.js and Supabase. Currently using a free tier of Gemini but can be made a lot more efficient once using a more powerful Agent.
 
